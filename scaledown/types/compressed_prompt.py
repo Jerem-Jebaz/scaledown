@@ -54,7 +54,6 @@ class CompressedPrompt(BaseModel):
     
     @classmethod
     def from_api_response(cls, content: str, raw_response: dict) -> 'CompressedPrompt':
-        # Safely extract metrics dictionary from response if nested
         metrics_data = raw_response.get('metrics', raw_response)
         
         metrics = CompressionMetrics(

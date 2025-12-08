@@ -42,7 +42,6 @@ class ScaleDownCompressor(BaseCompressor):
             raise ValueError("Invalid combination of context and prompt types.")
 
     def _compress_batch(self, context_list, prompt_list, **kwargs):
-        # Using 5 workers as per design
         with ThreadPoolExecutor(max_workers=5) as executor:
             results = list(executor.map(
                 lambda p: self._compress_single(p[0], p[1], **kwargs), 
@@ -83,14 +82,13 @@ class ScaleDownCompressor(BaseCompressor):
             response.raise_for_status()
             data = response.json()
             
-            # --- FIX: Extract nested data ---
+            # Extract nested data 
             results = data.get("results", {})
             
             # 1. Get content from 'results'
             content = results.get("compressed_prompt", "")
             
             # 2. Map API keys to our internal Metrics names
-            # The API uses 'total_original_tokens', our Metrics class expects 'original_prompt_tokens'
             prepared_metrics = {
                 "original_prompt_tokens": data.get("total_original_tokens", results.get("original_prompt_tokens", 0)),
                 "compressed_prompt_tokens": data.get("total_compressed_tokens", results.get("compressed_prompt_tokens", 0)),
