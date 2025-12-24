@@ -102,63 +102,7 @@ class Pipeline:
             original_content=original_context,
             history=history
         )
-
-    # def run(
-    #     self,
-    #     context: Union[str, List[str]],
-    #     query: Optional[str] = None,
-    #     prompt: Optional[str] = None,
-    #     max_tokens: Optional[int] = None,
-    #     **kwargs
-    # ) -> Union[OptimizedContext, CompressedPrompt]:
-    #     """
-    #     Run the full pipeline.
-        
-    #     Parameters
-    #     ----------
-    #     context : str or List[str]
-    #         Input context (code, documents, etc.)
-    #     query : str, optional
-    #         Query for optimizers
-    #     prompt : str, optional
-    #         Prompt for compressors
-    #     max_tokens : int, optional
-    #         Token budget
-    #     **kwargs : dict
-    #         Additional parameters
-            
-        # Returns
-        # -------
-        # OptimizedContext or CompressedPrompt
-        #     Final output from the last step
-        # """
-        # current_output = context
-        
-        # for name, step in self.steps:
-        #     if isinstance(step, BaseOptimizer):
-        #         # Optimizer step
-        #         current_output = step.optimize(
-        #             context=current_output if isinstance(current_output, (str, list)) else str(current_output),
-        #             query=query,
-        #             max_tokens=max_tokens,
-        #             **kwargs
-        #         )
-        #     elif isinstance(step, BaseCompressor):
-        #         # Compressor step
-        #         if isinstance(current_output, OptimizedContext):
-        #             context_str = str(current_output)
-        #         else:
-        #             context_str = current_output
-                
-        #         current_output = step.compress(
-        #             context=context_str,
-        #             prompt=prompt or query or "",
-        #             max_tokens=max_tokens,
-        #             **kwargs
-        #         )
-        
-        # return current_output 
-
+    
     def get_step(self, name: str) -> Union[BaseOptimizer, BaseCompressor]:
         """Get a step by name."""
         for step_name, step in self.steps:

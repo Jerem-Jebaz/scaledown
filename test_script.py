@@ -1,7 +1,3 @@
-"""
-Full ScaleDown Pipeline Integration Test (REAL API)
-Tests HASTE Optimizer + ScaleDown Compressor chain with actual network calls.
-"""
 import os
 import tempfile
 import sys
@@ -12,22 +8,16 @@ from scaledown.pipeline import Pipeline
 from scaledown.types import PipelineResult
 from scaledown.exceptions import AuthenticationError, APIError
 
-# -------------------------------------------------------------------------
-# 🔑 CONFIGURATION
-# -------------------------------------------------------------------------
-# REPLACE THIS WITH YOUR ACTUAL API KEY
-API_KEY = os.environ.get("SCALEDOWN_API_KEY", "yVlJ8qWWVF6wj8RZUfNHm7fUYqNBVEFr3Rrfep67")
+API_KEY = os.environ.get("SCALEDOWN_API_KEY", "your api key")
 
-if API_KEY == "YOUR_REAL_API_KEY_HERE":
-    print("⚠️  WARNING: Using placeholder API key. The API call will likely fail.")
-    print("   Export your key: export SCALEDOWN_API_KEY='sk_...'\n")
+if API_KEY == "your api key":
+    print(" WARNING: Using placeholder API key. The API call will likely fail.")
+    print("Export your key: export SCALEDOWN_API_KEY='sk_...'\n")
 
 # Set the API key globally
 sd.set_api_key(API_KEY)
 
-# -------------------------------------------------------------------------
-# Test Setup
-# -------------------------------------------------------------------------
+
 TEST_CODE = """
 def calculate_sum(numbers):
     \"\"\"Calculate sum of numbers.\"\"\"
@@ -64,9 +54,7 @@ with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False, encoding=
     temp_file = f.name
 
 try:
-    # -------------------------------------------------------------------------
     # 1. Initialize Components
-    # -------------------------------------------------------------------------
     print("\n1. Initializing Pipeline...")
     
     optimizer = HasteOptimizer(
@@ -85,9 +73,7 @@ try:
     ])
     print(" Pipeline created successfully")
 
-    # -------------------------------------------------------------------------
     # 2. Run Pipeline (REAL NETWORK CALL)
-    # -------------------------------------------------------------------------
     print(f"\n2. Calling API (Key: {API_KEY[:4]}...{API_KEY[-4:] if len(API_KEY)>8 else ''})...")
     
     query_str = "calculate_average function"
@@ -102,9 +88,7 @@ try:
     
     print(" API call successful!")
 
-    # -------------------------------------------------------------------------
     # 3. Step-by-Step Verification
-    # -------------------------------------------------------------------------
     print("\n3. Pipeline Flow Verification:")
     print("=" * 60)
     
@@ -116,11 +100,6 @@ try:
     print(f"File Path: {file_path_arg}")
     print("=" * 60)
 
-    # --- RECONSTRUCTING INTERMEDIATE OUTPUT ---
-    # Since PipelineResult stores the FINAL content, we need to re-run just the optimizer 
-    # locally to verify EXACTLY what the compressor received, or assume correctness.
-    # For full transparency in this test script, let's manually run the optimizer to show the user.
-    
     print("\n[STEP 1] Optimizer (HASTE) Output / Compressor Input:")
     print("-" * 20)
     
@@ -149,9 +128,7 @@ try:
     print(f"Compressor Output Tokens (API est.): {comp_step.output_tokens}")
     print("=" * 60)
 
-    # -------------------------------------------------------------------------
     # 4. Summary Metrics
-    # -------------------------------------------------------------------------
     print("\n4. Summary Metrics:")
     print("-" * 30)
     print(f"Original Context Size:  {len(TEST_CODE)} chars")
